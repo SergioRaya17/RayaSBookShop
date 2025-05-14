@@ -1,0 +1,23 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build output
+bin/
+obj/
+
+# Node
+node_modules/
+build/
+dist/
+
+# Entornos y configuración local
+.env
+.env.*.local
+*.local.json
+*.log
+
+# Archivos del sistema
+*.DS_Store
+Thumbs.db
