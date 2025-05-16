@@ -12,8 +12,8 @@ using bookShopAPI.Context;
 namespace bookShopAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250423071240_secondCreate")]
-    partial class secondCreate
+    [Migration("20250515192038_AddImagenesAutores")]
+    partial class AddImagenesAutores
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -89,6 +89,61 @@ namespace bookShopAPI.Migrations
                     b.ToTable("Idiomas");
                 });
 
+            modelBuilder.Entity("bookShopAPI.Models.Imagen", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Descripcion")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("LibroISBN")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(13)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LibroISBN");
+
+                    b.ToTable("Imagenes");
+                });
+
+            modelBuilder.Entity("bookShopAPI.Models.ImagenAutor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AutorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Descripcion")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AutorId");
+
+                    b.ToTable("ImagenesAutores");
+                });
+
             modelBuilder.Entity("bookShopAPI.Models.Libro", b =>
                 {
                     b.Property<string>("ISBN")
@@ -104,6 +159,11 @@ namespace bookShopAPI.Migrations
                     b.Property<decimal>("Precio")
                         .HasPrecision(6, 2)
                         .HasColumnType("decimal(6,2)");
+
+                    b.Property<string>("Sinopsis")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
 
                     b.Property<int>("Stock")
                         .HasColumnType("int");
@@ -261,6 +321,28 @@ namespace bookShopAPI.Migrations
                     b.ToTable("Usuarios");
                 });
 
+            modelBuilder.Entity("bookShopAPI.Models.Imagen", b =>
+                {
+                    b.HasOne("bookShopAPI.Models.Libro", "Libro")
+                        .WithMany("Imagenes")
+                        .HasForeignKey("LibroISBN")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Libro");
+                });
+
+            modelBuilder.Entity("bookShopAPI.Models.ImagenAutor", b =>
+                {
+                    b.HasOne("bookShopAPI.Models.Autor", "Autor")
+                        .WithMany("Imagenes")
+                        .HasForeignKey("AutorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Autor");
+                });
+
             modelBuilder.Entity("bookShopAPI.Models.Libro_Autor", b =>
                 {
                     b.HasOne("bookShopAPI.Models.Autor", "Autor")
@@ -350,6 +432,8 @@ namespace bookShopAPI.Migrations
 
             modelBuilder.Entity("bookShopAPI.Models.Autor", b =>
                 {
+                    b.Navigation("Imagenes");
+
                     b.Navigation("LibroAutores");
                 });
 
@@ -365,6 +449,8 @@ namespace bookShopAPI.Migrations
 
             modelBuilder.Entity("bookShopAPI.Models.Libro", b =>
                 {
+                    b.Navigation("Imagenes");
+
                     b.Navigation("LibroAutores");
 
                     b.Navigation("LibroCategorias");

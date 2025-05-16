@@ -83,6 +83,18 @@ namespace bookShopAPI.Context
                 .WithMany(u => u.Pedidos)
                 .HasForeignKey(p => p.UsuarioId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Imagen>()
+                .HasOne(img => img.Libro)
+                .WithMany(lib => lib.Imagenes)
+                .HasForeignKey(img => img.LibroISBN)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ImagenAutor>()
+                .HasOne(ia => ia.Autor)
+                .WithMany(a => a.Imagenes)
+                .HasForeignKey(ia => ia.AutorId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         public DbSet<Usuario> Usuarios => Set<Usuario>();
@@ -91,6 +103,8 @@ namespace bookShopAPI.Context
         public DbSet<Autor> Autores => Set<Autor>();
         public DbSet<Categoria> Categorias => Set<Categoria>();
         public DbSet<Idioma> Idiomas => Set<Idioma>();
+        public DbSet<Imagen> Imagenes => Set<Imagen>();
+        public DbSet<ImagenAutor> ImagenesAutores => Set<ImagenAutor>();
 
         public DbSet<Libro_Autor> LibroAutores => Set<Libro_Autor>();
         public DbSet<Libro_Categoria> LibroCategorias => Set<Libro_Categoria>();

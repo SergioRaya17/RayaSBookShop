@@ -17,6 +17,10 @@ namespace bookShopAPI.Models
         public string Titulo { get; set; } = null!;
 
         [Required]
+        [MaxLength(2000)] 
+        public string? Sinopsis { get; set; }
+
+        [Required]
         public DateTime FechaPublicacion { get; set; }
 
         [Required]
@@ -33,5 +37,7 @@ namespace bookShopAPI.Models
         public ICollection<Libro_Categoria>? LibroCategorias { get; set; }
         public ICollection<Libro_Idioma>? LibroIdiomas { get; set; }
         public ICollection<Libro_Pedido>? LibrosPedidos { get; set; }
+        public ICollection<Imagen>? Imagenes { get; set; }
+
     }
 }

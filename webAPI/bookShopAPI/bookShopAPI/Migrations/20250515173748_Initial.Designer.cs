@@ -12,8 +12,8 @@ using bookShopAPI.Context;
 namespace bookShopAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250423071633_fourCreate")]
-    partial class fourCreate
+    [Migration("20250515173748_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

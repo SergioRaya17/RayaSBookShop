@@ -22,5 +22,7 @@ namespace bookShopAPI.Models
         public DateTime? FechaFallecimiento { get; set; }
 
         public ICollection<Libro_Autor>? LibroAutores { get; set; }
+        public ICollection<ImagenAutor>? Imagenes { get; set; }
+
     }
 }

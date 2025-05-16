@@ -43,6 +43,14 @@ namespace bookShopAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Libro>> PostLibro(Libro libro)
         {
+            if (libro.Imagenes != null)
+            {
+                foreach (var imagen in libro.Imagenes)
+                {
+                    imagen.LibroISBN = libro.ISBN;
+                }
+            }
+
             _context.Libros.Add(libro);
             await _context.SaveChangesAsync();
 
