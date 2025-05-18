@@ -16,7 +16,7 @@ namespace bookShopAPI.Models
         [MaxLength(100)]
         public string? Descripcion { get; set; }
 
-        public int AutorId { get; set; }
+        public int? AutorId { get; set; }
 
         public Autor? Autor { get; set; }
     }

@@ -16,7 +16,7 @@ namespace bookShopAPI.Models
         [MaxLength(100)]
         public string? Descripcion { get; set; }
         
-        public string LibroISBN { get; set; } = null!;
+        public string? LibroISBN { get; set; } = null!;
 
         public Libro? Libro { get; set; }
     }
