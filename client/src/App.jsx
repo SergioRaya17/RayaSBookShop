@@ -1,43 +1,25 @@
-import Navbar from "./components/Navbar";
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-function App() {
+import Navbar from './components/Navbar';
+import Home from './pages/Home';
+import Libros from './pages/Libros';
+import Autores from './pages/Autores';
+import Categorias from './pages/Categorias';
+
+const App = () => {
   return (
-    <>
+    <BrowserRouter>
       <Navbar />
-      <main className="p-4">
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-        <h2 className="text-2xl font-semibold">Contenido principal</h2>
-      </main>
-    </>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/libros" element={<Libros />} />
+        <Route path="/autores" element={<Autores />} />
+        <Route path="/categorias" element={<Categorias />} />
+      </Routes>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
+

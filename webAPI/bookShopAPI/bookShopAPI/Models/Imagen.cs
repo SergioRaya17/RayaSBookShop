@@ -18,6 +18,8 @@ namespace bookShopAPI.Models
         
         public string? LibroISBN { get; set; } = null!;
 
+        public bool EsPortada { get; set; }
+
         public Libro? Libro { get; set; }
     }
 }

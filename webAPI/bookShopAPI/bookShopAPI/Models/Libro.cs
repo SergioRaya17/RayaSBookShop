@@ -33,6 +33,9 @@ namespace bookShopAPI.Models
         [Required]
         public int Stock { get; set; }
 
+        [Required]
+        public DateTime FechaCreacion { get; set; }
+
         public ICollection<Libro_Autor>? LibroAutores { get; set; }
         public ICollection<Libro_Categoria>? LibroCategorias { get; set; }
         public ICollection<Libro_Idioma>? LibroIdiomas { get; set; }

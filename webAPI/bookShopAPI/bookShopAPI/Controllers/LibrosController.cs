@@ -1,4 +1,5 @@
 ﻿using bookShopAPI.Context;
+using bookShopAPI.DTO;
 using bookShopAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,49 @@ namespace bookShopAPI.Controllers
             return libro;
         }
 
+        [HttpGet("ultimos/{cantidad}")]
+        public async Task<ActionResult<IEnumerable<LibroDto>>> GetUltimosLibros(int cantidad)
+        {
+            var libros = await _context.Libros
+                .Include(l => l.Imagenes)
+                .OrderByDescending(l => l.FechaCreacion)
+                .Take(cantidad)
+                .Select(l => new LibroDto
+                {
+                    ISBN = l.ISBN,
+                    Titulo = l.Titulo,
+                    ImagenUrl = l.Imagenes
+                        .Where(img => img.EsPortada)
+                        .Select(img => img.Url)
+                        .FirstOrDefault()
+                })
+                .ToListAsync();
+
+            return Ok(libros);
+        }
+
+        [HttpGet("todos")]
+        public async Task<ActionResult<IEnumerable<LibroDto>>> GetTodosLosLibros()
+        {
+            var libros = await _context.Libros
+                .Include(l => l.Imagenes)
+                .Select(l => new LibroDto
+                {
+                    ISBN = l.ISBN,
+                    Titulo = l.Titulo,
+                    ImagenUrl = l.Imagenes != null
+                        ? l.Imagenes
+                            .Where(img => img.EsPortada)
+                            .Select(img => img.Url)
+                            .FirstOrDefault()
+                        : null
+                })
+                .ToListAsync();
+
+            return Ok(libros);
+        }
+
+
         [HttpPost]
         public async Task<ActionResult<Libro>> PostLibro(Libro libro)
         {
@@ -51,10 +95,12 @@ namespace bookShopAPI.Controllers
                 }
             }
 
+            libro.FechaCreacion = DateTime.Now;
+
             _context.Libros.Add(libro);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetLibro), new { isbn = libro.ISBN }, libro);
+            return Ok(new { message = "Libro creado correctamente", isbn = libro.ISBN });
         }
 
 

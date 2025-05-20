@@ -41,6 +41,29 @@ namespace bookShopAPI.Controllers
             return autor;
         }
 
+        [HttpGet("destacados/{cantidad}")]
+        public async Task<ActionResult<IEnumerable<AutorDestacadoDTO>>> GetAutoresDestacados(int cantidad)
+        {
+            var autores = await _context.Autores
+                .Include(a => a.LibroAutores)
+                .Include(a => a.Imagenes)
+                .Select(a => new AutorDestacadoDTO
+                {
+                    Nombre = a.Nombre,
+                    ImagenUrl = a.Imagenes!
+                        .Where(img => img.esPrincipal)
+                        .Select(img => img.Url)
+                        .FirstOrDefault(),
+                    CantidadLibros = a.LibroAutores!.Count
+                })
+                .OrderByDescending(a => a.CantidadLibros)
+                .Take(cantidad)
+                .ToListAsync();
+
+            return Ok(autores);
+        }
+
+
         // POST: api/autores
         [HttpPost]
         public async Task<ActionResult<Autor>> PostAutor([FromBody] Autor autor)

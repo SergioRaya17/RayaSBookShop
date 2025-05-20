@@ -1,19 +1,20 @@
 import React from "react";
 import { User } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <header className="bg-gray-100 text-black shadow-md padding">
+    <header className="sticky top-0 z-50 bg-gray-100 text-black shadow-md">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
         {/* MENÚ IZQUIERDA */}
         <nav className="hidden md:flex gap-10 text-lg absolute left-0 p-7 font-navbar">
-          <a href="/libros" className="hover:underline p-3">Libros</a>
-          <a href="/autores" className="hover:underline p-3">Autores</a>
-          <a href="/categorias" className="hover:underline p-3">Categorías</a>
+          <Link to="/libros" className="hover:underline p-3">Libros</Link>
+          <Link to="/autores" className="hover:underline p-3">Autores</Link>
+          <Link to="/categorias" className="hover:underline p-3">Categorías</Link>
         </nav>
 
         {/* LOGO CENTRO */}
-        <div className="mx-auto text-4xl font-logo tracking-widest">RAYA</div>
+        <div className="mx-auto text-4xl font-logo tracking-widest"><a href="../">RAYA</a></div>
 
         {/* ICONO PERFIL DERECHA */}
         <div className="absolute right-0 p-7">

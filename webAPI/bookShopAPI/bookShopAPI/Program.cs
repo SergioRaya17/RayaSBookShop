@@ -7,12 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
-    }); 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -49,9 +44,11 @@ if (app.Configuration.GetValue<bool>("UseDeveloperExceptionPage"))
 else
     app.UseExceptionHandler("/error");
 
-app.UseHttpsRedirection();
+app.UseCors("AnyOrigin");
 
-app.UseCors();
+app.UseStaticFiles();
+
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
