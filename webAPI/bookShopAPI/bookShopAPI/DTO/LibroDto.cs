@@ -6,5 +6,4 @@
         public string Titulo { get; set; }
         public string? ImagenUrl { get; set; }
     }
-
 }

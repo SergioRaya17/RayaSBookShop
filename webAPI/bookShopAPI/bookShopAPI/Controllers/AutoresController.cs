@@ -63,6 +63,41 @@ namespace bookShopAPI.Controllers
             return Ok(autores);
         }
 
+        [HttpGet("completos")]
+        public async Task<ActionResult<IEnumerable<AutorCompletoDTO>>> GetAutoresCompletos()
+        {
+            var autores = await _context.Autores
+                .Include(a => a.Imagenes)
+                .Include(a => a.LibroAutores!)
+                    .ThenInclude(la => la.Libro)
+                    .ThenInclude(l => l.Imagenes)
+                .Select(a => new AutorCompletoDTO
+                {
+                    Id = a.Id,
+                    Nombre = a.Nombre,
+                    ImagenUrl = a.Imagenes
+                        .Where(i => i.esPrincipal)
+                        .Select(i => i.Url)
+                        .FirstOrDefault(),
+                    Biografia = a.Biografia,
+                    Libros = a.LibroAutores!
+                        .Select(la => new LibroDTO
+                        {
+                            ISBN = la.Libro!.ISBN,
+                            Titulo = la.Libro.Titulo,
+                            ImagenUrl = la.Libro.Imagenes!
+                                .Where(i => i.EsPortada)
+                                .Select(i => i.Url)
+                                .FirstOrDefault()
+                        })
+                        .ToList()
+                })
+                .ToListAsync();
+
+            return Ok(autores);
+        }
+
+
 
         // POST: api/autores
         [HttpPost]

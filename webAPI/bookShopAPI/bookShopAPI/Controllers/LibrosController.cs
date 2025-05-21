@@ -42,13 +42,13 @@ namespace bookShopAPI.Controllers
         }
 
         [HttpGet("ultimos/{cantidad}")]
-        public async Task<ActionResult<IEnumerable<LibroDto>>> GetUltimosLibros(int cantidad)
+        public async Task<ActionResult<IEnumerable<LibroDTO>>> GetUltimosLibros(int cantidad)
         {
             var libros = await _context.Libros
                 .Include(l => l.Imagenes)
                 .OrderByDescending(l => l.FechaCreacion)
                 .Take(cantidad)
-                .Select(l => new LibroDto
+                .Select(l => new LibroDTO
                 {
                     ISBN = l.ISBN,
                     Titulo = l.Titulo,
@@ -63,11 +63,11 @@ namespace bookShopAPI.Controllers
         }
 
         [HttpGet("todos")]
-        public async Task<ActionResult<IEnumerable<LibroDto>>> GetTodosLosLibros()
+        public async Task<ActionResult<IEnumerable<LibroDTO>>> GetTodosLosLibros()
         {
             var libros = await _context.Libros
                 .Include(l => l.Imagenes)
-                .Select(l => new LibroDto
+                .Select(l => new LibroDTO
                 {
                     ISBN = l.ISBN,
                     Titulo = l.Titulo,
@@ -103,6 +103,26 @@ namespace bookShopAPI.Controllers
             return Ok(new { message = "Libro creado correctamente", isbn = libro.ISBN });
         }
 
+        [HttpPost("asignar-categoria")]
+        public async Task<IActionResult> AsignarCategoria([FromBody] LibroCategoriaDTO dto)
+        {
+            var existeLibro = await _context.Libros.AnyAsync(l => l.ISBN == dto.LibroISBN);
+            var existeCategoria = await _context.Categorias.AnyAsync(c => c.Id == dto.CategoriaId);
+
+            if (!existeLibro || !existeCategoria)
+                return NotFound("El libro o la categoría no existen.");
+
+            var relacion = new Libro_Categoria
+            {
+                LibroISBN = dto.LibroISBN,
+                CategoriaId = dto.CategoriaId
+            };
+
+            _context.LibroCategorias.Add(relacion);
+            await _context.SaveChangesAsync();
+
+            return Ok("Categoría asignada al libro.");
+        }
 
         [HttpPut("{isbn}")]
         public async Task<IActionResult> PutLibro(string isbn, Libro libro)
